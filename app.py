@@ -8,9 +8,14 @@ st.write("✅ app.py loaded")   # 이 줄이 보이면 렌더는 정상
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
-def go_home():    st.session_state.page = "home"
-def go_current(): st.session_state.page = "current"
-def go_future():  st.session_state.page = "future"
+def go_home():
+    st.session_state.page = "home"
+
+def go_current():
+    st.session_state.page = "current"
+
+def go_future():
+    st.session_state.page = "future"
 
 st.caption(f"🧭 current page = {st.session_state.page}")
 
