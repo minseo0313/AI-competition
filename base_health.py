@@ -46,25 +46,25 @@ def render(go_home):
         with colA:
             st.markdown("**기본 정보**")
             EDATE = st.date_input("📅 조사일 (EDATE)", value=date.today())
-            CHILD_sel = st.selectbox("🤱 임신/출산 경험 (CHILD)", ["선택", 0, 1])
-            SEX_sel = st.selectbox("👤 성별 (SEX)", ["선택", 1, 2])
-            EDU = st.number_input("🎓 교육수준 (EDU)", min_value=0, step=1)
-            T_AGE = st.number_input("🎂 나이 (T_AGE)", min_value=0, step=1)
+            CHILD_sel = st.selectbox("🤱 출산 여부 (CHILD)", ["선택", "낳지 않았다 (1)", "낳았다 (2)"])
+            SEX_sel = st.selectbox("👤 성별 (SEX)", ["선택", "남자 (1)", "여자 (2)"])
+            EDU_sel = st.selectbox("🎓 교육수준 (EDU)", ["선택", "초등학교 이하 (1)", "중학교 (2)", "고등학교 (3)", "전문대 (4)", "대학교 (5)", "대학원 이상 (6)"])
+            T_AGE = st.number_input("🎂 나이 (T_AGE)", min_value=0, step=5, format="%d")
         
         with colB:
             st.markdown("**생활습관 & 기존 질환**")
-            T_DRINK_sel = st.selectbox("🍺 오늘 음주여부 (T_DRINK)", ["선택", 0, 1])
-            T_SMOKE_sel = st.selectbox("🚬 오늘 흡연여부 (T_SMOKE)", ["선택", 0, 1])
-            HTN_sel = st.selectbox("🩺 기존 고혈압 (HTN)", ["선택", 0, 1])
-            DM_sel = st.selectbox("🍯 기존 당뇨병 (DM)", ["선택", 0, 1])
-            LIP_sel = st.selectbox("🩸 기존 고지혈증 (LIP)", ["선택", 0, 1])
+            T_DRINK_sel = st.selectbox("🍺 음주 여부 (T_DRINK)", ["선택", "비음주 (1)", "과거음주 (2)", "현재음주 (3)"])
+            T_SMOKE_sel = st.selectbox("🚬 흡연 여부 (T_SMOKE)", ["선택", "비흡연 (1)", "과거흡연 (2)", "현재흡연 (3)"])
+            HTN_sel = st.selectbox("🩺 기존 고혈압 (HTN)", ["선택", "없음 (1)", "있음 (2)"])
+            DM_sel = st.selectbox("🍯 기존 당뇨병 (DM)", ["선택", "없음 (1)", "있음 (2)"])
+            LIP_sel = st.selectbox("🩸 기존 고지혈증 (LIP)", ["선택", "없음 (1)", "있음 (2)"])
         
         st.markdown("**신체지표**")
         colC, colD = st.columns(2)
         with colC:
-            WEIGHT = st.number_input("⚖️ 체중 (WEIGHT) - kg", min_value=0.0, step=0.1)
+            WEIGHT = st.number_input("⚖️ 체중 (WEIGHT) - kg", min_value=0.0, step=1.0, format="%.1f")
         with colD:
-            HEIGHT = st.number_input("📏 신장 (HEIGHT) - cm", min_value=0.0, step=0.1)
+            HEIGHT = st.number_input("📏 신장 (HEIGHT) - cm", min_value=0.0, step=5.0, format="%.1f")
         
         st.divider()
         
@@ -76,86 +76,117 @@ def render(go_home):
         
         with colE:
             st.markdown("**추가 개인정보**")
-            MNSAG = st.number_input("🌙 초경나이 (MNSAG)", min_value=-1, step=1, value=-1)
-            SMAG = st.number_input("🚬 흡연 시작 나이 (SMAG)", min_value=-1, step=1, value=-1)
+            MNSAG = st.number_input("🌙 초경나이 (MNSAG)", min_value=-1, step=2, value=-1, format="%d")
+            SMAG = st.number_input("🚬 흡연 시작 나이 (SMAG)", min_value=-1, step=5, value=-1, format="%d")
             
         with colF:
             st.markdown("**가족력**")
-            FMMHT = st.number_input("👩 고혈압 엄마 (FMMHT)", min_value=-1, max_value=1, step=1, value=-1)
-            FMFHT = st.number_input("👨 고혈압 아빠 (FMFHT)", min_value=-1, max_value=1, step=1, value=-1)
-            FMMDM = st.number_input("👩 당뇨병 엄마 (FMMDM)", min_value=-1, max_value=1, step=1, value=-1)
-            FMFDM = st.number_input("👨 당뇨병 아빠 (FMFDM)", min_value=-1, max_value=1, step=1, value=-1)
+            FMMHT_sel = st.selectbox("👩 고혈압 엄마 (FMMHT)", ["모름", "없음 (1)", "있음 (2)"])
+            FMFHT_sel = st.selectbox("👨 고혈압 아빠 (FMFHT)", ["모름", "없음 (1)", "있음 (2)"])
+            FMMDM_sel = st.selectbox("👩 당뇨병 엄마 (FMMDM)", ["모름", "없음 (1)", "있음 (2)"])
+            FMFDM_sel = st.selectbox("👨 당뇨병 아빠 (FMFDM)", ["모름", "없음 (1)", "있음 (2)"])
         
         with colG:
             st.markdown("**음주/흡연 상세**")
-            T_DRINKAM = st.number_input("🍺 오늘 음주량 (T_DRINKAM)", min_value=-1.0, step=0.1, value=-1.0)
-            T_SMOKEAM = st.number_input("🚬 오늘 흡연량 (T_SMOKEAM)", min_value=-1.0, step=0.1, value=-1.0)
+            T_DRINKAM = st.number_input("🍺 오늘 음주량 (T_DRINKAM)", min_value=-1.0, step=1.0, value=-1.0, format="%.1f")
+            T_SMOKEAM = st.number_input("🚬 오늘 흡연량 (T_SMOKEAM)", min_value=-1.0, step=1.0, value=-1.0, format="%.1f")
         
         st.markdown("**신체 측정값**")
         colH, colI = st.columns(2)
         with colH:
-            WAIST = st.number_input("📐 허리둘레 (WAIST) - cm", min_value=-1.0, step=0.1, value=-1.0)
-            HIP = st.number_input("📐 엉덩이둘레 (HIP) - cm", min_value=-1.0, step=0.1, value=-1.0)
-            SBP = st.number_input("💓 수축기 혈압 (SBP) - mmHg", min_value=-1.0, step=0.1, value=-1.0)
-            DBP = st.number_input("💓 이완기 혈압 (DBP) - mmHg", min_value=-1.0, step=0.1, value=-1.0)
+            WAIST = st.number_input("📐 허리둘레 (WAIST) - cm", min_value=-1.0, step=5.0, value=-1.0, format="%.1f")
+            HIP = st.number_input("📐 엉덩이둘레 (HIP) - cm", min_value=-1.0, step=5.0, value=-1.0, format="%.1f")
+            SBP = st.number_input("💓 수축기 혈압 (SBP) - mmHg", min_value=-1.0, step=10.0, value=-1.0, format="%.1f")
+            DBP = st.number_input("💓 이완기 혈압 (DBP) - mmHg", min_value=-1.0, step=5.0, value=-1.0, format="%.1f")
         with colI:
-            PULSE = st.number_input("💗 맥박 (PULSE) - bpm", min_value=-1.0, step=0.1, value=-1.0)
-            EXER = st.number_input("🏃 운동 빈도 (EXER)", min_value=-1.0, step=0.1, value=-1.0)
+            PULSE = st.number_input("💗 맥박 (PULSE) - bpm", min_value=-1.0, step=10.0, value=-1.0, format="%.1f")
+            EXER = st.number_input("🏃 운동 빈도 (EXER)", min_value=-1.0, step=1.0, value=-1.0, format="%.1f")
 
         st.markdown("**🔬 임상지표 (검사 결과)**")
         colJ, colK = st.columns(2)
         with colJ:
-            HBA1C = st.number_input("🩸 당화혈색소 (HBA1C) - %", min_value=-1.0, step=0.01, value=-1.0)
-            GLU = st.number_input("🍯 공복혈당 (GLU) - mg/dL", min_value=-1.0, step=0.1, value=-1.0)
-            HOMAIR = st.number_input("⚡ 인슐린저항성 (HOMAIR)", min_value=-1.0, step=0.001, value=-1.0)
-            TCHL = st.number_input("🩸 총콜레스테롤 (TCHL) - mg/dL", min_value=-1.0, step=0.1, value=-1.0)
+            HBA1C = st.number_input("🩸 당화혈색소 (HBA1C) - %", min_value=-1.0, step=0.5, value=-1.0, format="%.2f")
+            GLU = st.number_input("🍯 공복혈당 (GLU) - mg/dL", min_value=-1.0, step=10.0, value=-1.0, format="%.1f")
+            HOMAIR = st.number_input("⚡ 인슐린저항성 (HOMAIR)", min_value=-1.0, step=0.5, value=-1.0, format="%.3f")
+            TCHL = st.number_input("🩸 총콜레스테롤 (TCHL) - mg/dL", min_value=-1.0, step=10.0, value=-1.0, format="%.1f")
         with colK:
-            HDL = st.number_input("🩸 HDL콜레스테롤 (HDL) - mg/dL", min_value=-1.0, step=0.1, value=-1.0)
-            TG = st.number_input("🩸 중성지방 (TG) - mg/dL", min_value=-1.0, step=0.1, value=-1.0)
-            AST = st.number_input("🩸 AST (간기능) - U/L", min_value=-1.0, step=0.1, value=-1.0)
-            ALT = st.number_input("🩸 ALT (간기능) - U/L", min_value=-1.0, step=0.1, value=-1.0)
-            CREATININE = st.number_input("🩸 크레아티닌 (신장기능) - mg/dL", min_value=-1.0, step=0.01, value=-1.0)
+            HDL = st.number_input("🩸 HDL콜레스테롤 (HDL) - mg/dL", min_value=-1.0, step=5.0, value=-1.0, format="%.1f")
+            TG = st.number_input("🩸 중성지방 (TG) - mg/dL", min_value=-1.0, step=10.0, value=-1.0, format="%.1f")
+            AST = st.number_input("🩸 AST (간기능) - U/L", min_value=-1.0, step=5.0, value=-1.0, format="%.1f")
+            ALT = st.number_input("🩸 ALT (간기능) - U/L", min_value=-1.0, step=5.0, value=-1.0, format="%.1f")
+            CREATININE = st.number_input("🩸 크레아티닌 (신장기능) - mg/dL", min_value=-1.0, step=0.1, value=-1.0, format="%.2f")
 
-        submitted = st.form_submit_button("💾 저장하고 단기 예측 실행")
+            # 질병 선택
+            st.markdown("**🎯 예측할 질병 선택**")
+            disease_choice = st.selectbox(
+                "예측하고 싶은 질병을 선택하세요:",
+                ["당뇨병", "고혈압", "고지혈증"],
+                help="각 질병별로 다른 모델을 사용합니다."
+            )
+
+            submitted = st.form_submit_button("💾 저장하고 단기 예측 실행")
 
     # -------------------------------
     # 저장 + 검증 + 단기 예측
     # -------------------------------
     if submitted:
-        # 1) 필수값 검증
+        # 1) 필수값 검증 및 숫자 변환
         errors = []
-        CHILD = None if CHILD_sel == "선택" else CHILD_sel
-        SEX   = None if SEX_sel   == "선택" else SEX_sel
-        T_DRINK = None if T_DRINK_sel == "선택" else T_DRINK_sel
-        T_SMOKE = None if T_SMOKE_sel == "선택" else T_SMOKE_sel
-        HTN = None if HTN_sel == "선택" else HTN_sel
-        DM  = None if DM_sel  == "선택" else DM_sel
-        LIP = None if LIP_sel == "선택" else LIP_sel
+        
+        # 선택지에서 숫자로 변환하는 함수
+        def parse_selection(selection, choices):
+            if selection == "선택":
+                return None
+            for choice in choices:
+                if selection == choice:
+                    return choices[choice]
+            return None
+        
+        # 기본 정보 파싱
+        CHILD = None if CHILD_sel == "선택" else (1 if "낳지 않았다" in CHILD_sel else 2)
+        SEX = None if SEX_sel == "선택" else (1 if "남자" in SEX_sel else 2)
+        EDU = None if EDU_sel == "선택" else int(EDU_sel.split("(")[1].split(")")[0])
+        
+        # 음주/흡연 파싱
+        T_DRINK = None if T_DRINK_sel == "선택" else int(T_DRINK_sel.split("(")[1].split(")")[0])
+        T_SMOKE = None if T_SMOKE_sel == "선택" else int(T_SMOKE_sel.split("(")[1].split(")")[0])
+        
+        # 질병 진단 파싱
+        HTN = None if HTN_sel == "선택" else int(HTN_sel.split("(")[1].split(")")[0])
+        DM = None if DM_sel == "선택" else int(DM_sel.split("(")[1].split(")")[0])
+        LIP = None if LIP_sel == "선택" else int(LIP_sel.split("(")[1].split(")")[0])
+        
+        # 가족력 파싱
+        FMMHT = -1 if FMMHT_sel == "모름" else int(FMMHT_sel.split("(")[1].split(")")[0])
+        FMFHT = -1 if FMFHT_sel == "모름" else int(FMFHT_sel.split("(")[1].split(")")[0])
+        FMMDM = -1 if FMMDM_sel == "모름" else int(FMMDM_sel.split("(")[1].split(")")[0])
+        FMFDM = -1 if FMFDM_sel == "모름" else int(FMFDM_sel.split("(")[1].split(")")[0])
 
+        # 필수 항목 검증
         if EDATE is None:
-            errors.append("EDATE(조사일)를 선택하세요.")
+            errors.append("조사일을 선택하세요.")
         if CHILD is None:
-            errors.append("CHILD(임신/출산 경험)을 선택하세요.")
+            errors.append("출산 여부를 선택하세요.")
         if SEX is None:
-            errors.append("SEX(성별)을 선택하세요.")
-        if EDU is None or EDU < 0:
-            errors.append("EDU(교육수준)를 올바르게 입력하세요.")
+            errors.append("성별을 선택하세요.")
+        if EDU is None:
+            errors.append("교육수준을 선택하세요.")
         if T_DRINK is None:
-            errors.append("T_DRINK(오늘 음주여부)를 선택하세요.")
+            errors.append("음주 여부를 선택하세요.")
         if T_SMOKE is None:
-            errors.append("T_SMOKE(오늘 흡연)를 선택하세요.")
+            errors.append("흡연 여부를 선택하세요.")
         if T_AGE is None or T_AGE < 0:
-            errors.append("T_AGE(나이)를 올바르게 입력하세요.")
+            errors.append("나이를 올바르게 입력하세요.")
         if HTN is None:
-            errors.append("HTN(기존 고혈압)을 선택하세요.")
+            errors.append("고혈압 진단 여부를 선택하세요.")
         if DM is None:
-            errors.append("DM(기존 당뇨병)을 선택하세요.")
+            errors.append("당뇨병 진단 여부를 선택하세요.")
         if LIP is None:
-            errors.append("LIP(기존 고지혈증)을 선택하세요.")
+            errors.append("고지혈증 진단 여부를 선택하세요.")
         if WEIGHT is None or WEIGHT <= 0:
-            errors.append("WEIGHT(체중)을 0보다 크게 입력하세요.")
+            errors.append("체중을 0보다 크게 입력하세요.")
         if HEIGHT is None or HEIGHT <= 0:
-            errors.append("HEIGHT(신장)을 0보다 크게 입력하세요.")
+            errors.append("신장을 0보다 크게 입력하세요.")
 
         if errors:
             for e in errors:
@@ -192,27 +223,40 @@ def render(go_home):
                 df["T_ID"] = pd.to_numeric(df["T_ID"], errors="coerce")
             df_user = df[df["T_ID"] == 1]
             last_row_df = df_user.tail(1)
-            X = preprocess_base(last_row_df)
+            
+            # 질병별 전처리 및 모델 로드
+            disease_map = {"당뇨병": "dm", "고혈압": "htn", "고지혈증": "lip"}
+            disease_code = disease_map[disease_choice]
+            X = preprocess_base(last_row_df, disease_code)
 
-            # 5) 단기 예측 (base → current 순 폴백)
-            models = None
+            # 해당 질병 모델만 로드
+            model_path = f"models/base_model_{disease_code}.joblib"
             try:
-                models = load_models(kind="base")
+                import joblib
+                model = joblib.load(model_path)
+                
+                with st.spinner(f"{disease_choice} 예측 실행 중..."):
+                    st.subheader(f"⚡ {disease_choice} 예측 결과")
+                    prob = float(model.predict_proba(X)[0][1])
+                    pred = int(model.predict(X)[0])
+                    
+                    st.metric(
+                        label=f"{disease_choice} 발생 위험도",
+                        value=f"{prob:.1%}",
+                        delta="높음" if pred == 1 else "낮음"
+                    )
+                    
+                    if prob > 0.7:
+                        st.warning("⚠️ 위험도가 높습니다. 정기적인 건강 검진을 권장합니다.")
+                    elif prob > 0.4:
+                        st.info("ℹ️ 주의가 필요합니다. 생활습관 개선을 권장합니다.")
+                    else:
+                        st.success("✅ 위험도가 낮습니다. 현재 생활습관을 유지하세요.")
+                        
             except FileNotFoundError:
-                try:
-                    models = load_models(kind="current")
-                except FileNotFoundError:
-                    models = None
-
-            if models is None:
-                st.info("단기 예측용 모델(`base_model_*` 또는 `current_model_*`)이 없습니다.\n"
-                        "→ 저장은 계속 누적됩니다. 10년 후 예측 페이지는 사용 가능합니다.")
-            else:
-                with st.spinner("단기 예측 실행 중..."):
-                    st.subheader("⚡ 단기 예측 결과")
-                    for disease_name, model in models.items():
-                        prob = float(model.predict_proba(X)[0][1])
-                        st.write(f"**{disease_name}**: {prob:.2%}")
+                st.error(f"❌ {disease_choice} 모델 파일을 찾을 수 없습니다: {model_path}")
+            except Exception as e:
+                st.error(f"❌ {disease_choice} 예측 중 오류 발생: {e}")
 
             # 6) 최근 입력 미리보기
             with st.expander("📄 최근 입력(상위 5행) 보기"):
