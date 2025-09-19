@@ -35,58 +35,86 @@ def render(go_home):
     # 입력 폼
     # -------------------------------
     with st.form("daily_input_form", clear_on_submit=False):
-        st.subheader("📝 오늘 입력")
-
-        colA, colB, colC, colD = st.columns(4)
-
-        # 필수: EDATE, CHILD, SEX, EDU, T_DRINK, T_SMOKE, T_AGE, HTN, DM, LIP, WEIGHT, HEIGHT
+        st.subheader("📝 생활습관 및 신체지표 입력")
+        
+        # 필수 항목 섹션
+        st.markdown("### 🔴 필수 입력 항목")
+        st.info("아래 항목들은 반드시 입력해주세요.")
+        
+        colA, colB = st.columns(2)
+        
         with colA:
-            EDATE = st.date_input("EDATE(조사일)", value=date.today())  # 필수
-            CHILD_sel = st.selectbox("CHILD(임신/출산 경험)", ["선택", 0, 1])  # 필수(0/1)
-            SEX_sel   = st.selectbox("SEX(성별)", ["선택", 1, 2])          # 필수(1/2)
-            MNSAG = st.number_input("MNSAG(초경나이, 선택)", min_value=-1, step=1, value=-1)  # 선택
-            EDU   = st.number_input("EDU(교육수준)", min_value=0, step=1)  # 필수
-            SMAG  = st.number_input("SMAG(흡연 시작 나이, 선택)", min_value=-1, step=1, value=-1)  # 선택
-
+            st.markdown("**기본 정보**")
+            EDATE = st.date_input("📅 조사일 (EDATE)", value=date.today())
+            CHILD_sel = st.selectbox("🤱 임신/출산 경험 (CHILD)", ["선택", 0, 1])
+            SEX_sel = st.selectbox("👤 성별 (SEX)", ["선택", 1, 2])
+            EDU = st.number_input("🎓 교육수준 (EDU)", min_value=0, step=1)
+            T_AGE = st.number_input("🎂 나이 (T_AGE)", min_value=0, step=1)
+        
         with colB:
-            T_DRINK_sel = st.selectbox("T_DRINK(오늘 음주여부)", ["선택", 0, 1])  # 필수
-            T_DRINKAM = st.number_input("T_DRINKAM(오늘 음주 주량, 선택)", min_value=-1.0, step=0.1, value=-1.0)  # 선택
-            T_SMOKE_sel = st.selectbox("T_SMOKE(오늘 흡연)", ["선택", 0, 1])  # 필수
-            T_SMOKEAM = st.number_input("T_SMOKEAM(오늘 흡연량, 선택)", min_value=-1.0, step=0.1, value=-1.0)  # 선택
-            T_AGE = st.number_input("T_AGE(나이)", min_value=0, step=1)  # 필수
-
+            st.markdown("**생활습관 & 기존 질환**")
+            T_DRINK_sel = st.selectbox("🍺 오늘 음주여부 (T_DRINK)", ["선택", 0, 1])
+            T_SMOKE_sel = st.selectbox("🚬 오늘 흡연여부 (T_SMOKE)", ["선택", 0, 1])
+            HTN_sel = st.selectbox("🩺 기존 고혈압 (HTN)", ["선택", 0, 1])
+            DM_sel = st.selectbox("🍯 기존 당뇨병 (DM)", ["선택", 0, 1])
+            LIP_sel = st.selectbox("🩸 기존 고지혈증 (LIP)", ["선택", 0, 1])
+        
+        st.markdown("**신체지표**")
+        colC, colD = st.columns(2)
         with colC:
-            HTN_sel = st.selectbox("HTN(기존 고혈압)", ["선택", 0, 1])  # 필수
-            DM_sel  = st.selectbox("DM(기존 당뇨병)", ["선택", 0, 1])  # 필수
-            LIP_sel = st.selectbox("LIP(기존 고지혈증)", ["선택", 0, 1])  # 필수
-            FMMHT = st.number_input("FMMHT(고혈압 엄마, 선택)", min_value=-1, max_value=1, step=1, value=-1)
-            FMFHT = st.number_input("FMFHT(고혈압 아빠, 선택)", min_value=-1, max_value=1, step=1, value=-1)
-            FMMDM = st.number_input("FMMDM(당뇨병 엄마, 선택)", min_value=-1, max_value=1, step=1, value=-1)
-            FMFDM = st.number_input("FMFDM(당뇨병 아빠, 선택)", min_value=-1, max_value=1, step=1, value=-1)
-
+            WEIGHT = st.number_input("⚖️ 체중 (WEIGHT) - kg", min_value=0.0, step=0.1)
         with colD:
-            WEIGHT = st.number_input("WEIGHT(체중 kg)", min_value=0.0, step=0.1)  # 필수 (>0 권장)
-            HEIGHT = st.number_input("HEIGHT(신장 cm)", min_value=0.0, step=0.1)  # 필수 (>0 권장)
-            WAIST  = st.number_input("WAIST(허리둘레 cm, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            HIP    = st.number_input("HIP(엉덩이둘레 cm, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            SBP    = st.number_input("SBP(수축기 혈압, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            DBP    = st.number_input("DBP(이완기 혈압, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            PULSE  = st.number_input("PULSE(맥박, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            EXER   = st.number_input("EXER(운동 빈도, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-
-        st.markdown("#### 🔬 임상지표(선택 입력 가능)")
-        colE, colF = st.columns(2)
+            HEIGHT = st.number_input("📏 신장 (HEIGHT) - cm", min_value=0.0, step=0.1)
+        
+        st.divider()
+        
+        # 선택 항목 섹션
+        st.markdown("### 🟡 선택 입력 항목")
+        st.info("아래 항목들은 선택사항입니다. 모르는 경우 입력하지 않으셔도 됩니다.")
+        
+        colE, colF, colG = st.columns(3)
+        
         with colE:
-            HBA1C = st.number_input("HBA1C(혈당, 선택)", min_value=-1.0, step=0.01, value=-1.0)
-            GLU   = st.number_input("GLU(공복혈당, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            HOMAIR= st.number_input("HOMAIR(인슐린 저항성, 선택)", min_value=-1.0, step=0.001, value=-1.0)
-            TCHL  = st.number_input("TCHL(총콜레스테롤, 선택)", min_value=-1.0, step=0.1, value=-1.0)
+            st.markdown("**추가 개인정보**")
+            MNSAG = st.number_input("🌙 초경나이 (MNSAG)", min_value=-1, step=1, value=-1)
+            SMAG = st.number_input("🚬 흡연 시작 나이 (SMAG)", min_value=-1, step=1, value=-1)
+            
         with colF:
-            HDL   = st.number_input("HDL(선택)", min_value=-1.0, step=0.1, value=-1.0)
-            TG    = st.number_input("TG(중성지방, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            AST   = st.number_input("AST(간기능, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            ALT   = st.number_input("ALT(간기능, 선택)", min_value=-1.0, step=0.1, value=-1.0)
-            CREATININE = st.number_input("CREATININE(신장기능, 선택)", min_value=-1.0, step=0.01, value=-1.0)
+            st.markdown("**가족력**")
+            FMMHT = st.number_input("👩 고혈압 엄마 (FMMHT)", min_value=-1, max_value=1, step=1, value=-1)
+            FMFHT = st.number_input("👨 고혈압 아빠 (FMFHT)", min_value=-1, max_value=1, step=1, value=-1)
+            FMMDM = st.number_input("👩 당뇨병 엄마 (FMMDM)", min_value=-1, max_value=1, step=1, value=-1)
+            FMFDM = st.number_input("👨 당뇨병 아빠 (FMFDM)", min_value=-1, max_value=1, step=1, value=-1)
+        
+        with colG:
+            st.markdown("**음주/흡연 상세**")
+            T_DRINKAM = st.number_input("🍺 오늘 음주량 (T_DRINKAM)", min_value=-1.0, step=0.1, value=-1.0)
+            T_SMOKEAM = st.number_input("🚬 오늘 흡연량 (T_SMOKEAM)", min_value=-1.0, step=0.1, value=-1.0)
+        
+        st.markdown("**신체 측정값**")
+        colH, colI = st.columns(2)
+        with colH:
+            WAIST = st.number_input("📐 허리둘레 (WAIST) - cm", min_value=-1.0, step=0.1, value=-1.0)
+            HIP = st.number_input("📐 엉덩이둘레 (HIP) - cm", min_value=-1.0, step=0.1, value=-1.0)
+            SBP = st.number_input("💓 수축기 혈압 (SBP) - mmHg", min_value=-1.0, step=0.1, value=-1.0)
+            DBP = st.number_input("💓 이완기 혈압 (DBP) - mmHg", min_value=-1.0, step=0.1, value=-1.0)
+        with colI:
+            PULSE = st.number_input("💗 맥박 (PULSE) - bpm", min_value=-1.0, step=0.1, value=-1.0)
+            EXER = st.number_input("🏃 운동 빈도 (EXER)", min_value=-1.0, step=0.1, value=-1.0)
+
+        st.markdown("**🔬 임상지표 (검사 결과)**")
+        colJ, colK = st.columns(2)
+        with colJ:
+            HBA1C = st.number_input("🩸 당화혈색소 (HBA1C) - %", min_value=-1.0, step=0.01, value=-1.0)
+            GLU = st.number_input("🍯 공복혈당 (GLU) - mg/dL", min_value=-1.0, step=0.1, value=-1.0)
+            HOMAIR = st.number_input("⚡ 인슐린저항성 (HOMAIR)", min_value=-1.0, step=0.001, value=-1.0)
+            TCHL = st.number_input("🩸 총콜레스테롤 (TCHL) - mg/dL", min_value=-1.0, step=0.1, value=-1.0)
+        with colK:
+            HDL = st.number_input("🩸 HDL콜레스테롤 (HDL) - mg/dL", min_value=-1.0, step=0.1, value=-1.0)
+            TG = st.number_input("🩸 중성지방 (TG) - mg/dL", min_value=-1.0, step=0.1, value=-1.0)
+            AST = st.number_input("🩸 AST (간기능) - U/L", min_value=-1.0, step=0.1, value=-1.0)
+            ALT = st.number_input("🩸 ALT (간기능) - U/L", min_value=-1.0, step=0.1, value=-1.0)
+            CREATININE = st.number_input("🩸 크레아티닌 (신장기능) - mg/dL", min_value=-1.0, step=0.01, value=-1.0)
 
         submitted = st.form_submit_button("💾 저장하고 단기 예측 실행")
 
