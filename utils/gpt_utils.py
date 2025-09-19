@@ -6,7 +6,13 @@ import streamlit as st
 import openai
 
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# API 키 설정 (secrets.toml 또는 환경변수에서)
+try:
+    openai.api_key = st.secrets["OPENAI_API_KEY"]
+except:
+    # secrets.toml이 없거나 키가 없는 경우 환경변수에서 시도
+    import os
+    openai.api_key = os.getenv("OPENAI_API_KEY", "개인 키")  # 실제 키로 바꾸기
 
 
 def generate_gpt_explanation(user_data, column_meaning, results_prob, feature_importances):
