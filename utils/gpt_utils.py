@@ -50,6 +50,11 @@ def generate_gpt_explanation(user_data, column_meaning, results_prob, feature_im
         
     except Exception as e:
         # GPT 호출 실패 시 기본 설명 반환
+        try:
+            error_msg = str(e)
+        except UnicodeEncodeError:
+            error_msg = "인코딩 오류가 발생했습니다"
+        
         return f"""
 예측 결과 요약:
 - 고혈압: {results_prob.get('고혈압', 0):.1%}
@@ -57,5 +62,5 @@ def generate_gpt_explanation(user_data, column_meaning, results_prob, feature_im
 - 고지혈증: {results_prob.get('고지혈증', 0):.1%}
 
 위험도가 높은 질병에 대해서는 정기적인 건강 검진과 생활습관 개선을 권장합니다.
-(GPT 설명 생성 중 오류가 발생했습니다: {str(e)})
+(GPT 설명 생성 중 오류가 발생했습니다: {error_msg})
 """
