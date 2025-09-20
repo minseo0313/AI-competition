@@ -36,7 +36,10 @@ elif st.session_state.page == "current":
         base_health.render(go_home)
     except Exception as e:
         st.error("`base_health` 로딩/실행 중 오류가 발생했습니다.")
-        st.exception(e)
+        try:
+            st.exception(e)
+        except UnicodeEncodeError:
+            st.error("인코딩 오류가 발생했습니다.")
 
 # ------------------ FUTURE ------------------
 elif st.session_state.page == "future":
@@ -45,4 +48,7 @@ elif st.session_state.page == "future":
         follow_health.render(go_home)
     except Exception as e:
         st.error("`follow_health` 로딩/실행 중 오류가 발생했습니다.")
-        st.exception(e)
+        try:
+            st.exception(e)
+        except UnicodeEncodeError:
+            st.error("인코딩 오류가 발생했습니다.")

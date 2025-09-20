@@ -256,7 +256,11 @@ def render(go_home):
             except FileNotFoundError:
                 st.error(f"❌ {disease_choice} 모델 파일을 찾을 수 없습니다: {model_path}")
             except Exception as e:
-                st.error(f"❌ {disease_choice} 예측 중 오류 발생: {e}")
+                try:
+                    error_msg = str(e)
+                except UnicodeEncodeError:
+                    error_msg = "인코딩 오류가 발생했습니다"
+                st.error(f"❌ {disease_choice} 예측 중 오류 발생: {error_msg}")
 
             # 6) 최근 입력 미리보기
             with st.expander("📄 최근 입력(상위 5행) 보기"):
@@ -265,4 +269,8 @@ def render(go_home):
         except FileNotFoundError:
             st.error("데이터 파일을 찾을 수 없습니다. data/follow_sample.csv 경로를 확인하세요.")
         except Exception as e:
-            st.error(f"에러 발생: {e}")
+            try:
+                error_msg = str(e)
+            except UnicodeEncodeError:
+                error_msg = "인코딩 오류가 발생했습니다"
+            st.error(f"에러 발생: {error_msg}")
